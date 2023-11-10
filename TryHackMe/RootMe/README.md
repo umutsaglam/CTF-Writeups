@@ -82,6 +82,21 @@ cat /var/www/user.txt ile user flag’ı görüntüleyebiliriz.
 
 find / -user root -perm /4000 ile root yetkisi edilecek dosyalar araştıralım.
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/RootMe/images/a6.png?raw=true)
+
+Burada /usr/bin/python dikkatimi çekti. [GTFOBins](https://gtfobins.github.io/gtfobins/python/) sayfasında python üzerinden yetki yükseltme ile ilgili komut bulunuyor.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/RootMe/images/a7.png?raw=true)
+
+python -c ‘import os; os.execl(“/bin/sh”, “sh”, “-p”)’ komutu ile yetkimizi yükseltelim.
+
+Ardından cat /root/root.txt komutu ile root bayrağına ulaşalım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/RootMe/images/a8.png?raw=true)
+
+> THM{pr1v1l3g3_3sc4l4t10n}
+
+Ve böylelikle bir ctf daha tamamladık gelecek yazılarımda görüşmek üzere.
 
 
 
