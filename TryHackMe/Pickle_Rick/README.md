@@ -57,6 +57,34 @@ netcat çalıştırmayı unutmayın.
 
 Makineye girmeyi başardık.
 
+Bu aşamadan sonra makinede araştırma yapmak kalıyor.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Pickle_Rick/images/a10.png?raw=true)
+
+>ls
+
+>cat Sup3rS3cretPickl3Ingred.txt
+
+İlk sorunun cevabına ulaşıyoruz.
+> mr. meeseek hair
+
+Devam edelim.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Pickle_Rick/images/a11.png?raw=true)
+
+>ls 
+
+> cat *
+
+İkinci sorunun cevabına ulaştık.
+
+>1 jerry tear
+
+Son sorunun cevabı root dizininde. Root dizinine ulaşmak içinde root yetkisine sahip olmak gerekir. Bu sistemde yetki yükseltme komutları için hiçbir önlem alınmamış. O yüzden herhangi bir root yükseltme komutu ile yetki yükseltilebilir. Ben root yükseltmek için sudo bash komutunu kullandım
+
+
+
+
 
 
 
