@@ -14,9 +14,29 @@ Makineyi tarayın, kaç tane port açık?
 └─# nmap -T5 -p- -v -sV 10.10.155.83     
 ```
 
-![](https://github.com/umutsaglam/umutsaglam.github.io/tree/main/ctf/tryhackme/RootMe/images/a1.png)
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/RootMe/images/a1.png?raw=true)
 
-Göründüğü gibi 22 ve 80 portu açık. Cevap: 2
+>Göründüğü gibi 22 ve 80 portu açık. Cevap: 2
 
+2.
+```
+Çalışan Apache versiyonu nedir?
+```
+>2.4.29
 
+3.
+```
+22 portunda çalışan servis nedir?
+```
+> ssh
 
+4.
+```
+Gizli dizin nedir?
+```
+Gobuster çalıştırarak gizli dizini bulalım.
+
+```
+┌──(root㉿r3tr0)-[/home/kali/Desktop/ctf/RootMe]
+└─# gobuster dir --url http://10.10.178.135 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,html -t 60
+```
