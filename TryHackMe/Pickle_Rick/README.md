@@ -82,6 +82,13 @@ Devam edelim.
 
 Son sorunun cevabı root dizininde. Root dizinine ulaşmak içinde root yetkisine sahip olmak gerekir. Bu sistemde yetki yükseltme komutları için hiçbir önlem alınmamış. O yüzden herhangi bir root yükseltme komutu ile yetki yükseltilebilir. Ben root yükseltmek için sudo bash komutunu kullandım
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Pickle_Rick/images/a12.png?raw=true)
+
+Son sorunun cevabını buluyoruz.
+
+> fleeb juice
+
+Ve böylelikle bir ctf daha tamamladık gelecek yazılarımda görüşmek üzere.
 
 
 
