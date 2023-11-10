@@ -55,3 +55,36 @@ Bir form yükleyin ve ters shell alın ve bayrağı bulun.
 
 ![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/RootMe/images/a3.png?raw=true)
 
+Php reverse shell komut dosyası kullanılarak bağlantı sağlanılabilir. Bunun için pentest monkey’in [php reverse shell](https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php) kodunu kullandım. Dosya yüklenmek istendiğinde izin verilmiyor.
+
+Dosya adı uzantısı değiştirilerek file upload bypass işlemi yapılabilir. Bu yüzden php-reverse-shell.php dosyasının adı php-reverse-shell.php5 yapıldığında yükleme işlemi başarı ile gerçekleşiyor.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/RootMe/images/a4.png?raw=true)
+
+Yükleme işlemi yapmadan önce dosyayı açıp kendi ip adresinizi ve dinlemek istediğiniz portu girmelisiniz.
+
+Dosyayı yükledikten sonra netcat çalıştırıyoruz.
+```
+┌──(root㉿r3tr0)-[/home/kali/Desktop/ctf/RootMe]
+└─# nc -nvlp 1234 
+```
+http://10.10.178.135/uploads/ a giderek yüklediğimiz dosyayı çalışıyoruz ve shellimizi alıyoruz.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/RootMe/images/a5.png?raw=true)
+
+python -c ‘import pty;pty.spawn(“/bin/bash”)’ ile bağlantı stabil hale getirelim.
+
+cat /var/www/user.txt ile user flag’ı görüntüleyebiliriz.
+
+> THM{y0u_g0t_a_sh3ll}
+
+# Bölüm 3 - Privilege escalation 
+
+find / -user root -perm /4000 ile root yetkisi edilecek dosyalar araştıralım.
+
+
+
+
+
+
+
