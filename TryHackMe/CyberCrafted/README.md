@@ -223,3 +223,6 @@ Son SQL sorgularının amacı veritabanının yapısı hakkında ayrıntılı bi
 
 Bunu akılda tutarak, size daha fazla bilgi verebilecek olanları seçin; yöneticinin adını, şifresini ve mümkünse herhangi bir işareti almak istediğimizi unutmayın:
 
+```
+asdf' UNION SELECT 1, 2, id, hash FROM admin #
+```
