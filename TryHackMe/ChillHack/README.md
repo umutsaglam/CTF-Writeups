@@ -170,3 +170,5 @@ cat local.txt
 
 >{USER-FLAG: e8vpd3323cfvlp0qpxxx9qtr5iq37oww}
 
+Geri yetki yükseltmek ve root bayrağını almak kaldı.
+
