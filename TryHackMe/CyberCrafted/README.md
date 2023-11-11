@@ -188,6 +188,9 @@ Siteye eriştiğimizde minecraft item arama sayfası olduğunu görüyoruz.
 
 SQL enjeksiyonu işe yarayabilir.
 
+Bundan sonraki kısımları sqlmap ile yapabilirsiniz fakat ben manuel olarak göstereceğim.
+
+
 ![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a4.png?raw=true)
 
 Gördüğümüz gibi, arama terimi listelenen kelimelerin hiçbirini içermeden liste tüm öğeleri gösteriyor ve ayrıca herhangi bir uyarı veya uyarı da göstermiyor.
