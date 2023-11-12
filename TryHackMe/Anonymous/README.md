@@ -222,5 +222,12 @@ Buradaki /usr/bin/env dikkatimi çekiyor ve gtfobins sitesine gidip yetki yükse
 ![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Anonymous/images/a4.png?raw=true)
 
 
-
 - /usr/bin/env /bin/sh -p komutu ile yetkimizi yükseltelim.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Anonymous/images/a5.png?raw=true)
+
+root flag:
+>4d930091c31a622a7ed10f27999af363
+
+
+Ve böylelikle bir ctf daha tamamladık gelecek yazılarımda görüşmek üzere.
