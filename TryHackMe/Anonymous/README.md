@@ -139,8 +139,13 @@ nc -nvlp 1234
 
 Kısa bir süre bekledikten sonra makineye erişim sağlıyoruz.
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Anonymous/images/a2.png?raw=true)
 
+Shellimizi stabil hale getirelim:
 
+```
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+```
 
 
 
