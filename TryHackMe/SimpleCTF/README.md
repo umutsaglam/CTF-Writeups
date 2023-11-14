@@ -182,4 +182,5 @@ Root bayrağı nedir?
 
 Ve böylece bir ctf daha tamamladık. Gelecek yazılarımda görüşmek üzere.
 
+<img src="/Gif/fsoc.gif" style="width:500px;height:250px;">
 
