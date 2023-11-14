@@ -42,6 +42,14 @@ Düşündüğüm gibi çıkmadı 15 i deniyorum ve aynı sonucu alıyorum. Biraz
 
 ![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/Corridor/images/a7.png?raw=true)
 
+- flag{2477ef02448ad9156661ac40a6b8862e}
+
+
+ * * *
+Ve böylelikle bir ctf daha tamamladık gelecek yazılarımda görüşmek üzere.
+
+<img src="/Gif/fsoc.gif" style="width:500px;height:250px;">
+
 
 
 
