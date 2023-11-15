@@ -152,6 +152,38 @@ l parametresi; kullanıcı adı belirtmek için kullanılır.
 -P parametresi; wordlist kullanarak şifre denememizi sağlar. Şifrenin bilinmediği zamanlarda bu parametre kullanılır.
 ```
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/H4cked/images/a13.png?raw=true)
+
+Şifreyi buluyoruz.
+
+- 987654321
+
+Bu bilgileri kullanarak ftp servisine giriş yapalım.
+
+Saldırganın yaptığı gibi php reverse shell ekliyoruz.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/H4cked/images/a14.png?raw=true)
+
+Ardından chmod 777 ile herkesin ulaşabilmesini sağlayalım.
+
+netcat çalıştıralım. 
+
+```
+nc -nvlp 1234
+```
+
+10.10.139.146/shell2.php adresine gittiğimde shellimi alıyorum.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/H4cked/images/a15.png?raw=true)
+
+python3 -c 'import pty; pty.spawn("/bin/bash")' ile shelli stabil hale getirelim ve su jenny yazarak jenny kullanıcısına geçelim.
+
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/H4cked/images/a16.png?raw=true)
+
+
+
+
+
 
 
 
