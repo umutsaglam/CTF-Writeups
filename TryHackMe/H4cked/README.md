@@ -180,7 +180,17 @@ python3 -c 'import pty; pty.spawn("/bin/bash")' ile shelli stabil hale getirelim
 
 ![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/H4cked/images/a16.png?raw=true)
 
+Ardından saldırganın yaptığı gibi sudo su komutunu çalıştırarak root olalım ve bayrağı alalım.
 
+![](https://github.com/umutsaglam/CTF-Writeups/blob/main/TryHackMe/H4cked/images/a17.png?raw=true)
+
+- ebcefd66ca4b559d17b440b6e67fd0fd
+
+* * * 
+
+Ve böylelikle bir ctf daha tamamladık gelecek yazılarımda görüşmek üzere.
+
+<img src="/Gif/fsoc.gif" style="width:500px;height:250px;">
 
 
 
